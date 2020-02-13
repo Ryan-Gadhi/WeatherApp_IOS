@@ -15,6 +15,7 @@ class WeatherViewController: UIViewController, UITextFieldDelegate{
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var searchTextField: UITextField!
     
+    var weatherManager = WeatherManager()
     
     
     override func viewDidLoad() {
@@ -56,6 +57,9 @@ class WeatherViewController: UIViewController, UITextFieldDelegate{
          use the weather api here to get the data and update the label
          
          */
+        if let typedCity = textField.text{
+        weatherManager.fetchWeather(of: typedCity)
+        }
         textField.text = ""
         textField.placeholder = "Type Another City"
     }
