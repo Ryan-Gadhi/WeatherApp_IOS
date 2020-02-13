@@ -25,10 +25,22 @@ class WeatherViewController: UIViewController, UITextFieldDelegate{
     
     @IBAction func searchIconPressed(_ sender: Any) {
         print(searchTextField.text!)
+        // the following endEditing function sends a request to the deligate and calls textFieldShouldEndEditing, a logic resides there to approve or disapprove this selection
         searchTextField.endEditing(true)
     }
     
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        if textField.text == "" {
+            textField.placeholder = "Please Provide a City!"
+            return false
+        }else{
+            return true
+        }
+        
+    }
     
+    // after clicking the return button this function gets
+    // triggered
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
         print(textField.text!)
@@ -37,6 +49,16 @@ class WeatherViewController: UIViewController, UITextFieldDelegate{
         return true
     }
     
+    // after the keyboard dissappears this gets called
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        
+        /*
+         use the weather api here to get the data and update the label
+         
+         */
+        textField.text = ""
+        textField.placeholder = "Type Another City"
+    }
     
 
 }
