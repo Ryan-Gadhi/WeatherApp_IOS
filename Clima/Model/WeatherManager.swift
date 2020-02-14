@@ -14,6 +14,7 @@ struct WeatherManager{
     let unit = "metric"
     let partialURL = "https://api.openweathermap.org/data/2.5/weather?"
     var fullURL:String? = nil
+    var delegate:WeatherManagerDelegate? = nil
     
     init() {
         self.fullURL = partialURL+"units="+unit+"&appid="+apiKey
@@ -57,16 +58,29 @@ struct WeatherManager{
         do {
             let decodedData = try myDecoder.decode(WeatherData.self, from: data)
             
-            print("the tempreuter is : \(decodedData.main.temp)")
-            print("the description is: \(decodedData.weather[0].description)")
+            let weatherId = decodedData.weather[0].id
+            let temp = decodedData.main.temp
+            let cityName = decodedData.name
+            let description = decodedData.weather[0].description
             
+            let weatherModel = WeatherModel(id: weatherId, cityName: cityName, description: description, temp: temp)
+            
+            delegate?.weatherDidUpdate(weatherModel: weatherModel)
+                            
+            print("the tempreuter is : \(weatherModel.roundedTemp)")
+            print("the description is: \(weatherModel.description)")
+            print("the icon name is: \(weatherModel.iconName)")
             
         }catch{
             print("could not parse jason")
         }
         
     }
+   
     
 }
 
 
+protocol WeatherManagerDelegate {
+    func weatherDidUpdate(weatherModel:WeatherModel)
+}

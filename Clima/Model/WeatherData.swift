@@ -15,7 +15,7 @@ struct WeatherData:Decodable{
 }
 struct Weather: Decodable{
     let description: String
-    
+    let id: Int // an ID describing the weather type in openWeather.com
 }
 
 struct Main:Decodable{
