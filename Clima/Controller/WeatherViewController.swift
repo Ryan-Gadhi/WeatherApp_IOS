@@ -25,7 +25,7 @@ class WeatherViewController: UIViewController, UITextFieldDelegate{
     }
     
     @IBAction func searchIconPressed(_ sender: Any) {
-        print(searchTextField.text!)
+
         // the following endEditing function sends a request to the deligate and calls textFieldShouldEndEditing, a logic resides there to approve or disapprove this selection
         searchTextField.endEditing(true)
     }
@@ -44,7 +44,7 @@ class WeatherViewController: UIViewController, UITextFieldDelegate{
     // triggered
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
-        print(textField.text!)
+        
         textField.endEditing(true)
         
         return true

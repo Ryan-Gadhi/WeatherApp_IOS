@@ -37,23 +37,36 @@ struct WeatherManager{
         // creating the URL Session
         let session = URLSession(configuration: .default) // I don't get how .default works
         // creating the Task
-        let task = session.dataTask(with: url, completionHandler: handler)
+        let task = session.dataTask(with: url) { (data, urlResponse, error) in
+            // anonymouse function
+            if error != nil {
+                print("error: \(String(describing: error))")
+                return
+            }
+            
+            if let safeData = data{
+                let jsonData = self.parseJson(data: safeData)
+                
+            }
+        }
         // sending the request
         task.resume()
-        
+    }
+    func parseJson(data:Data){
+        let myDecoder = JSONDecoder()
+        do {
+            let decodedData = try myDecoder.decode(WeatherData.self, from: data)
+            
+            print("the tempreuter is : \(decodedData.main.temp)")
+            print("the description is: \(decodedData.weather[0].description)")
+            
+            
+        }catch{
+            print("could not parse jason")
+        }
         
     }
-    func handler(data:Data?, urlResponse:URLResponse?, error:Error?){
-        if error != nil { // there is an error
-            print("error:\(error)")
-            return
-        }
-        
-        if let safeData = data{
-            let responeJson = String(data: safeData, encoding: .utf8)
-            print(responeJson)
-        }
-    };
+    
 }
 
 
