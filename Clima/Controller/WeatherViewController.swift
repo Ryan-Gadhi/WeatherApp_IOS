@@ -7,12 +7,8 @@
 //
 
 import UIKit
-
-class WeatherViewController: UIViewController, WeatherManagerDelegate{
-    
-    
-    
-    
+//MARK: -Main WeatherViewController Class
+class WeatherViewController: UIViewController{
     
     
     @IBOutlet weak var conditionImageView: UIImageView!
@@ -22,8 +18,6 @@ class WeatherViewController: UIViewController, WeatherManagerDelegate{
     
     var weatherManager = WeatherManager()
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         weatherManager.delegate = self
@@ -31,16 +25,10 @@ class WeatherViewController: UIViewController, WeatherManagerDelegate{
         
     }
     
-
-    
-    
-    
-
-    
     
 }
 
-
+//MARK: -UITextFieldDelage Section
 extension WeatherViewController:  UITextFieldDelegate{
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         if textField.text == "" {
@@ -83,8 +71,8 @@ extension WeatherViewController:  UITextFieldDelegate{
     }
 }
 
-
-extension WeatherViewController {
+//MARK: -WeatherManagerDelegate
+extension WeatherViewController : WeatherManagerDelegate {
     
     func weatherDidUpdate(_ weatherModel: WeatherModel) {
         DispatchQueue.main.async { // why is this a clousre
