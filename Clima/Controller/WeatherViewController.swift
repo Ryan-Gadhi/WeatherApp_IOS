@@ -12,6 +12,7 @@ class WeatherViewController: UIViewController{
     
    
     
+    
     @IBOutlet weak var conditionImageView: UIImageView!
     @IBOutlet weak var temperatureLabel: UILabel!
     @IBOutlet weak var cityLabel: UILabel!
@@ -24,20 +25,27 @@ class WeatherViewController: UIViewController{
         super.viewDidLoad()
         weatherManager.delegate = self
         searchTextField.delegate = self // don't forget this again!
+        updateLocationToGPS()
         
-        // CoreLocation code
-        locationManager.delegate = self
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.requestLocation()
         
     }
+    
     
     
 }
 
 //MARK: -LocationAccess
 extension WeatherViewController: CLLocationManagerDelegate{
+    func updateLocationToGPS(){
+        // CoreLocation code
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.requestLocation()
+    }
     
+    @IBAction func locationIconPressed(_ sender: Any) {
+        updateLocationToGPS()
+    }
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]){
         if let location = locations.last{
             let lat = location.coordinate.latitude

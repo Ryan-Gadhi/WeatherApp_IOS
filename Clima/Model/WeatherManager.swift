@@ -8,7 +8,7 @@
 //
 
 import Foundation
-
+import CoreLocation
 
 protocol WeatherManagerDelegate {
     func weatherDidUpdate(_ weatherModel:WeatherModel)
@@ -38,7 +38,9 @@ struct WeatherManager{
         
     }
     
-    mutating func fetchWeather(lat: Double , long:Double){
+    mutating func fetchWeather(lat:CLLocationDegrees , long:CLLocationDegrees){
+        // This CLLocationDegrees seems to be some sort of decimal number
+        // It works with the api
         if var url = fullURL {
             url += "&lat=\(lat)&lon=\(long)"
             //print("url: \(url)")
