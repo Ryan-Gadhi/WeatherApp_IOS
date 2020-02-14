@@ -3,7 +3,8 @@
 //  Clima
 //
 //  Created by Angela Yu on 01/09/2019.
-//  Copyright © 2019 App Brewery. All rights reserved.
+//  Copyright © Ryan Gadhi
+//  intial setup by AppBrewery
 //
 
 import UIKit

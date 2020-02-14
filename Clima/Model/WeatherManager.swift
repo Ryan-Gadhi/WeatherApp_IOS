@@ -3,7 +3,8 @@
 //  Clima
 //
 //  Created by Project X on 2/13/20.
-//  Copyright © 2020 App Brewery. All rights reserved.
+//  Copyright © Ryan Gadhi
+//  intial setup by AppBrewery
 //
 
 import Foundation
@@ -37,6 +38,21 @@ struct WeatherManager{
         
     }
     
+    mutating func fetchWeather(lat: Double , long:Double){
+        if var url = fullURL {
+            url += "&lat=\(lat)&lon=\(long)"
+            //print("url: \(url)")
+            performWebRequest(to: url) // actual networking
+        }
+        
+    }
+    
+    
+   
+    
+}
+//MARK: -Networking Details Sections
+extension WeatherManager {
     func performWebRequest(to urlString: String){
         
         // creating the URL object
@@ -84,8 +100,4 @@ struct WeatherManager{
         }
         
     }
-   
-    
 }
-
-

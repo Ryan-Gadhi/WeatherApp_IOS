@@ -3,7 +3,8 @@
 //  Clima
 //
 //  Created by Project X on 2/14/20.
-//  Copyright © 2020 App Brewery. All rights reserved.
+//  Copyright © Ryan Gadhi
+//  intial setup by AppBrewery
 //
 
 import Foundation

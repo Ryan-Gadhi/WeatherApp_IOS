@@ -2,14 +2,15 @@
 //  ViewController.swift
 //  Clima
 //
-//  Created by Angela Yu on 01/09/2019.
-//  Copyright © 2019 App Brewery. All rights reserved.
+//  Copyright © Ryan Gadhi
+//  intial setup by AppBrewery
 //
-
 import UIKit
+import CoreLocation
 //MARK: -Main WeatherViewController Class
 class WeatherViewController: UIViewController{
     
+   
     
     @IBOutlet weak var conditionImageView: UIImageView!
     @IBOutlet weak var temperatureLabel: UILabel!
@@ -17,16 +18,44 @@ class WeatherViewController: UIViewController{
     @IBOutlet weak var searchTextField: UITextField!
     
     var weatherManager = WeatherManager()
+    let locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         weatherManager.delegate = self
         searchTextField.delegate = self // don't forget this again!
         
+        // CoreLocation code
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.requestLocation()
+        
     }
     
     
 }
+
+//MARK: -LocationAccess
+extension WeatherViewController: CLLocationManagerDelegate{
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]){
+        if let location = locations.last{
+            let lat = location.coordinate.latitude
+            let long = location.coordinate.longitude
+            weatherManager.fetchWeather(lat: lat, long: long)
+        }
+        
+    
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error){
+        print("The user refused to grant the location ")
+    }
+}
+    
+    
+    
+
 
 //MARK: -UITextFieldDelage Section
 extension WeatherViewController:  UITextFieldDelegate{
