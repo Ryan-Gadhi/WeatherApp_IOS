@@ -9,6 +9,13 @@
 import Foundation
 
 
+protocol WeatherManagerDelegate {
+    func weatherDidUpdate(_ weatherModel:WeatherModel)
+    
+    func didFailWithError(_ error: Error)
+}
+
+
 struct WeatherManager{
     let apiKey = "ca31819e90361ab177862340aaee52da"
     let unit = "metric"
@@ -41,19 +48,22 @@ struct WeatherManager{
         let task = session.dataTask(with: url) { (data, urlResponse, error) in
             // anonymouse function
             if error != nil {
-                print("error: \(String(describing: error))")
+                self.delegate?.didFailWithError(error!)
                 return
             }
             
             if let safeData = data{
-                let jsonData = self.parseJson(data: safeData)
-                
+                let weatherModel = self.parseJson(data: safeData)
+                if let safeWeatherModel = weatherModel{
+                    self.delegate?.weatherDidUpdate(safeWeatherModel)
+                }
+
             }
         }
         // sending the request
         task.resume()
     }
-    func parseJson(data:Data){
+    func parseJson(data:Data) -> WeatherModel?{
         let myDecoder = JSONDecoder()
         do {
             let decodedData = try myDecoder.decode(WeatherData.self, from: data)
@@ -64,15 +74,13 @@ struct WeatherManager{
             let description = decodedData.weather[0].description
             
             let weatherModel = WeatherModel(id: weatherId, cityName: cityName, description: description, temp: temp)
-            
-            delegate?.weatherDidUpdate(weatherModel: weatherModel)
-                            
-            print("the tempreuter is : \(weatherModel.roundedTemp)")
-            print("the description is: \(weatherModel.description)")
-            print("the icon name is: \(weatherModel.iconName)")
+                        
+            return weatherModel
+
             
         }catch{
-            print("could not parse jason")
+            delegate?.didFailWithError(error)
+            return nil
         }
         
     }
@@ -81,6 +89,3 @@ struct WeatherManager{
 }
 
 
-protocol WeatherManagerDelegate {
-    func weatherDidUpdate(weatherModel:WeatherModel)
-}

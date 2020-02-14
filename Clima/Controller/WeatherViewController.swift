@@ -8,7 +8,8 @@
 
 import UIKit
 
-class WeatherViewController: UIViewController, UITextFieldDelegate, WeatherManagerDelegate{
+class WeatherViewController: UIViewController, WeatherManagerDelegate{
+    
     
     
     
@@ -30,12 +31,17 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, WeatherManag
         
     }
     
-    @IBAction func searchIconPressed(_ sender: Any) {
-        
-        // the following endEditing function sends a request to the deligate and calls textFieldShouldEndEditing, a logic resides there to approve or disapprove this selection
-        searchTextField.endEditing(true)
-    }
+
     
+    
+    
+
+    
+    
+}
+
+
+extension WeatherViewController:  UITextFieldDelegate{
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         if textField.text == "" {
             textField.placeholder = "Please Provide a City!"
@@ -70,14 +76,27 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, WeatherManag
         textField.placeholder = "Type Another City"
     }
     
+    @IBAction func searchIconPressed(_ sender: Any) {
+        
+        // the following endEditing function sends a request to the deligate and calls textFieldShouldEndEditing, a logic resides there to approve or disapprove this selection
+        searchTextField.endEditing(true)
+    }
+}
+
+
+extension WeatherViewController {
     
-    func weatherDidUpdate(weatherModel: WeatherModel) {
+    func weatherDidUpdate(_ weatherModel: WeatherModel) {
         DispatchQueue.main.async { // why is this a clousre
             self.cityLabel.text =  weatherModel.cityName
             self.temperatureLabel.text = weatherModel.roundedTemp
-            self.conditionImageView.image = UIImage(named: weatherModel.iconName)
+            self.conditionImageView.image = UIImage(systemName:  weatherModel.iconName)
         }
     }
     
+    func didFailWithError(_ error: Error) {
+        print(error)
+    }
 }
+
 
